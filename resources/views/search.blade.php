@@ -659,7 +659,7 @@
                             </div>
                         </div>
                         <div class="col-md-12 col-sm-12 col-xs-12" id="more_search_div" style="background-color:#fff;padding-top:20px;padding-bottom:20px;display:none;padding-left:0px;padding-right:0px;z-index:100;position:absolute;border-top:1px solid rgb(0, 66, 116)">
-                            <div class="col-md-4 col-sm-6 col-xs-12" style="padding-left:0px;padding-right:0px;margin-bottom:10px;">
+                            <div class="col-md-6 col-sm-6 col-xs-12" style="padding-left:0px;padding-right:0px;margin-bottom:10px;">
                                 <div class="col-md-12 col-sm-12 col-xs-12" style="margin-top:10px;">
                                     <div class="form-group">
                                         <label for="property-title">City or Zip</label>
@@ -793,7 +793,7 @@
                                 </div>
                             </div>
 
-                            <div class="col-md-4 col-sm-6 col-xs-12" style="padding-left:0px;padding-right:0px;margin-bottom:40px;">
+                            <div class="col-md-6 col-sm-6 col-xs-12" style="padding-left:0px;padding-right:0px;margin-bottom:40px;">
                                 <div class="col-md-6 col-sm-6 col-xs-6">
                                     <span style="display: inline-block; margin-top: 6px;font-size:14px;">Quick Move-In</span>
                                     <label class="switch">
@@ -826,7 +826,7 @@
                                 <div class="col-md-6 col-sm-6 col-xs-6">
                                     <span style="display: inline-block; margin-top: 6px;font-size:14px;">Price Reduced</span>
                                     <label class="switch">
-                                        <input type="checkbox" name="price_reduced" id="price_reduced" value="1" @if(app('request')->input('price_reduced') =='1') ?> checked @endif>
+                                        <input type="checkbox" name="price_reduced" id="price_reduced" value="1" @if(app('request')->input('price_reduced') =='1')  checked @endif>
                                         <div class="slider round"></div>
                                     </label>
                                 </div>
@@ -840,113 +840,7 @@
                             <?php  ?>
 
                                 <div class="clearfix"></div>
-                                <h2 style="padding-left: 16px; padding-top: 40px;">AMENITIES</h2>
-                                <div class="col-md-6 col-sm-6 col-xs-6">
-                                    <span style="display: inline-block; margin-top: 6px;font-size:14px;">Green Features</span>
-                                    <label class="switch">
-                                        <input type="checkbox" name="green_features" id="green_features" value="1" @if(app('request')->input('green_features') =='1') ?> checked @endif>
-                                        <div class="slider round"></div>
-                                    </label>
-                                </div>
-                                <div class="col-md-6 col-sm-6 col-xs-6">
-                                    <span style="display: inline-block; margin-top: 6px;font-size:14px;">Community Pool</span>
-                                    <label class="switch">
-                                        <input type="checkbox" name="community_pool" id="community_pool" value="1" @if(app('request')->input('community_pool') =='1') ?> checked @endif>
-                                        <div class="slider round"></div>
-                                    </label>
-                                </div>
-                                <div class="col-md-6 col-sm-6 col-xs-6">
-                                    <span style="display: inline-block; margin-top: 6px;font-size:14px;">Golf Course</span>
-                                    <label class="switch">
-                                        <input type="checkbox" name="golf_course" id="golf_course" value="1" @if(app('request')->input('golf_course') =='1') ?> checked @endif>
-                                        <div class="slider round"></div>
-                                    </label>
-                                </div>
-                                <div class="col-md-6 col-sm-6 col-xs-6">
-                                    <span style="display: inline-block; margin-top: 6px;font-size:14px;">Gated Community</span>
-                                    <label class="switch">
-                                        <input type="checkbox" name="gated_community" id="gated_community" value="1" @if(app('request')->input('gated_community') =='1') checked @endif>
-                                        <div class="slider round"></div>
-                                    </label>
-                                </div>
-                                <div class="col-md-6 col-sm-6 col-xs-6">
-                                    <span style="display: inline-block; margin-top: 6px;font-size:14px;">Nature Views</span>
-                                    <label class="switch">
-                                        <input type="checkbox" name="nature_views" id="nature_views" value="1" @if(app('request')->input('nature_views') =='1') checked @endif>
-                                        <div class="slider round"></div>
-                                    </label>
-                                </div>
-                                <div class="col-md-6 col-sm-6 col-xs-6">
-                                    <span style="display: inline-block; margin-top: 6px;font-size:14px;">Parks</span>
-                                    <label class="switch">
-                                        <input type="checkbox" name="parks" id="parks" value="1" @if(app('request')->input('parks') =='1') checked @endif>
-                                        <div class="slider round"></div>
-                                    </label>
-                                </div>
-                                <div class="col-md-6 col-sm-6 col-xs-6">
-                                    <span style="display: inline-block; margin-top: 6px;font-size:14px;">Pool</span>
-                                    <label class="switch">
-                                        <input type="checkbox" name="pool_check" id="pool_check" value="1" @if(app('request')->input('pool_check') =='1') checked @endif>
-                                        <div class="slider round"></div>
-                                    </label>
-                                </div>
-                                <div class="col-md-6 col-sm-6 col-xs-6">
-                                    <span style="display: inline-block; margin-top: 6px;font-size:14px;">Views</span>
-                                    <label class="switch">
-                                        <input type="checkbox" name="views" id="views" value="1" @if(app('request')->input('views') =='1') checked @endif>
-                                        <div class="slider round"></div>
-                                    </label>
-                                </div>
-                                <div class="col-md-6 col-sm-6 col-xs-6">
-                                    <span style="display: inline-block; margin-top: 6px;font-size:14px;">Waterfront</span>
-                                    <label class="switch">
-                                        <input type="checkbox" name="waterfront" id="waterfront" value="1" @if(app('request')->input('waterfront') =='1') checked @endif>
-                                        <div class="slider round"></div>
-                                    </label>
-                                </div>
-                                <div class="col-md-6 col-sm-6 col-xs-6">
-                                    <span style="display: inline-block; margin-top: 6px;font-size:14px;">Club House</span>
-                                    <label class="switch">
-                                        <input type="checkbox" name="club_house" id="club_house" value="1" @if(app('request')->input('club_house') =='1') checked @endif>
-                                        <div class="slider round"></div>
-                                    </label>
-                                </div>
-                            </div>
 
-                            <div class="col-md-4 col-sm-6 col-xs-12" style="padding-left:0px;padding-right:0px;margin-bottom:40px;">
-                                <div class="col-md-12 col-sm-12 col-xs-12" style="margin-top:10px;">
-                                    <div class="form-group">
-                                        <label for="builder_name">Builder Name</label>
-                                        <select class="selectpicker" id="builder_name" data-live-search="false" data-live-search-style="begins" title="Any" name="builder_name">
-                                        </select>
-                                    </div>
-
-                                    <div class="form-group">
-                                        <label for="community_name">Community Name</label>
-                                        <select class="selectpicker" id="community_name" data-live-search="false" data-live-search-style="begins" title="Any" name="community_name">
-                                            <option value="">Any</option>
-
-                                        </select>
-                                    </div>
-
-                                    <div class="form-group">
-                                        <label for="community_status">Community Status</label>
-                                        <select class="selectpicker" id="community_status" data-live-search="false" data-live-search-style="begins" title="Any" name="community_status">
-                                            <option value="Active">Active</option>
-                                            <option value="Inactive">Inactive</option>
-                                            <option value="Pending">Pending</option>
-                                        </select>
-                                    </div>
-
-                                    <div class="form-group">
-                                        <label for="special_offers">Special Offers</label>
-                                        <select class="selectpicker" id="special_offers" data-live-search="false" data-live-search-style="begins" title="Any" name="special_offers">
-                                            <option value="1st Offer">1st Offer</option>
-                                            <option value="2nd Offer">2nd Offer</option>
-                                            <option value="3rd Offer">3rd Offer</option>
-                                        </select>
-                                    </div>
-                                </div>
                             </div>
 
                             <div class="col-md-12 col-sm-12 col-xs-12" style="padding-left:0px;padding-right:0px;margin-bottom:40px;">
@@ -1062,7 +956,8 @@
                                                                 <span class="item-price">${{ number_format($propList->LISTPRICE) }}</span>
                                                                 <span class="item-sub-price">
                                                             	@if($propList->LISTPRICE < $propList->LISTPRICEORIG)
-                                                                        {{ strstr( number_format(($propList->LISTPRICEORIG - $propList->LISTPRICE)),'.',true) }}&nbsp;&nbsp;<img src="{{ asset('images/downarrow.png') }}" style="width:15px;height:15px;">
+                                                                    <img src="{{ asset('images/downarrow.png') }}" style="width:15px;height:15px;">
+                                                                    ${{ number_format($propList->LISTPRICEORIG - $propList->LISTPRICE) }}
                                                                 @endif
                                                             </span>
                                                             </div>
@@ -1374,7 +1269,7 @@
             @endif
 
             @php
-                $str .= "{lat: ".$propList->LATITUDE.", lng: ".$propList->LONGITUDE.", price: '".\App\Helpers\AppHelper::kmprice($propList->LISTPRICE)."', image: '".(($propList->PHOTOCOUNT>0)?$propList->photo1_url:'images/greenhome.jpg')."', address: '".$tmp_address_map."', LOTSIZE: '".$propList->LOTSIZE.' '.$acc."',bed: '".$propList->BEDS."', bath: '".$sim_totalbaths."', garage: '".$propList->GARAGECAP."', sqft: '".number_format($propList->SQFTTOTAL)."', property_type: '".$propList->PROPTYPE."', permalink: '".addslashes($propList->permalink)."', mlsnum: '".$propList->MLSNUM."'},";
+                $str .= "{lat: ".$propList->LATITUDE.", lng: ".$propList->LONGITUDE.", price: '".\App\Helpers\AppHelper::kmprice($propList->LISTPRICE)."', image: '".(($propList->PHOTOCOUNT>0)?$propList->photo1_url:'images/greenhome.jpg')."', address: '".$tmp_address_map."', LOTSIZE: '".$propList->LOTSIZE.' '.$acc."',bed: '".$propList->BEDS."', bath: '".$sim_totalbaths."', garage: '".$propList->GARAGECAP."', sqft: '".number_format($propList->SQFTTOTAL)."', property_type: 'residential', permalink: '".addslashes($propList->permalink)."', mlsnum: '".$propList->MLSNUM."'},";
 
 
             @endphp
@@ -1684,7 +1579,7 @@
                             })
 
                             markers[i] = marker;
-                            addInfoWindow(marker, '<div class="item-wrap"><div class="property-item-grid"><figure class="item-thumb"><a href="https://buildentory.com/property_details/' + markerData[i].permalink + '/' + markerData[i].property_type + '" class="hover-effect"><img src="' + markerData[i].image + '" width="290" style="width:290px;"></a><div class="price"><span class="item-price">' + kFormatter(markerData[i].price) + '</span><span class="item-sub-price"></div><div class="item-caption"><h4 class="item-caption-title">' + markerData[i].address + '</h4><ul class="item-caption-list"><li>' + markerData[i].bed + ' bed</li><li>' + markerData[i].bath + ' bath</li><li>' + markerData[i].garage + ' garage</li><li>' + markerData[i].sqft + ' sqft</li></ul></div></figure></div></div>');
+                            addInfoWindow(marker, '<div class="item-wrap"><div class="property-item-grid"><figure class="item-thumb"><a href="https://buildentory.com/property_details/' + markerData[i].permalink + '/residential" class="hover-effect"><img src="' + markerData[i].image + '" width="290" style="width:290px;"></a><div class="price"><span class="item-price">' + kFormatter(markerData[i].price) + '</span><span class="item-sub-price"></div><div class="item-caption"><h4 class="item-caption-title">' + markerData[i].address + '</h4><ul class="item-caption-list"><li>' + markerData[i].bed + ' bed</li><li>' + markerData[i].bath + ' bath</li><li>' + markerData[i].garage + ' garage</li><li>' + markerData[i].sqft + ' sqft</li></ul></div></figure></div></div>');
                         }
                     }
 

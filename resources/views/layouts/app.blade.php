@@ -16,9 +16,7 @@
 
     <meta name="apple-itunes-app" content="app-id=1281722341, affiliate-data=myAffiliateData, app-argument=myURL">
 
-    <link rel="apple-touch-icon" sizes="144x144" href="images/favicons/apple-touch-icon.png">
-    <link rel="icon" type="image/png" href="images/favicons/favicon-32x32.png" sizes="32x32">
-    <link rel="icon" type="image/png" href="images/favicons/favicon-16x16.png" sizes="16x16">
+
     <link rel="manifest" href="images/favicons/manifest.json">
     <link rel="mask-icon" href="images/favicons/safari-pinned-tab.svg" >
     <meta name="theme-color" content="#ffffff">
@@ -32,6 +30,9 @@
     <link href="{{ asset('css/bootstrap-datetimepicker.min.css?v='.time()) }}" rel="stylesheet" type="text/css" />
     <link href="{{ asset('css/jquery-ui.css?v='.time()) }}" rel="stylesheet" type="text/css" />
     <link href="{{ asset('css/styles.css?v='.time()) }}" rel="stylesheet" type="text/css" />
+
+    <link href="{{ asset('css/slick.css') }}" rel="stylesheet" type="text/css" />
+    <link href="{{ asset('css/slick-theme.css') }}" rel="stylesheet" type="text/css" />
 
     @yield('style_sheets')
 
@@ -57,44 +58,87 @@
                             <p>Please sign in to access your account<br/></p>
                             <p class="error text-danger" id="login_error" style="display:none"><i class="fa fa-close"></i> Incorrect email or password given.</p>
                         </div>
-                        <form>
+                        <form action="{{ route('signin') }}" method="post">
+                            @csrf
                             <div class="form-group field-group">
                                 <div class="input-user input-icon">
-                                    <input type="text" placeholder="Email" name="login_email" id="login_email">
+                                    <input type="text" placeholder="Email" name="email" >
                                 </div>
                                 <div class="input-pass input-icon">
-                                    <input type="password" placeholder="Password" name="login_pass" id="login_pass">
+                                    <input type="password" placeholder="Password" name="password">
                                 </div>
                             </div>
-                            <button type="button" class="btn btn-primary btn-block" onclick="loginToAccount()">Login</button>
+                            <input type="submit" class="btn btn-primary btn-block" style="margin-top:15px;" value="Sign In">
                         </form>
                     </div>
                     <div class="tab-pane fade" style="text-align:center;width:220%;">
-                        <form id="signupform">
+                        <form action="{{ route('signup') }}" method="post">
+                            @csrf
                             <div id="sliding1" style="float:left;width:50%;">
                                 <div style="margin-right:10%;">
                                     <h2>Welcome!</h2>
-                                    <p>Sign Up and start saving properties and communities in your My Saved. Please fill out the following:<br/></p>
-                                    <div class="form-group field-group">
-                                        <div class="input-user input-icon">
-                                            <input type="text" placeholder="First Name" name="first_name" id="sfirst_name">
-                                        </div>
-                                        <div class="input-user input-icon">
-                                            <input type="text" placeholder="Last Name" name="last_name" id="slast_name">
-                                        </div>
-                                        <div class="fa-phone input-icon">
-                                            <input type="text" placeholder="Cell" name="cell" id="scell">
-                                        </div>
-                                        <div class="input-email input-icon">
-                                            <input type="email" placeholder="Email"  name="email" id="semail">
-                                        </div>
-                                        <div class="input-pass input-icon">
-                                            <input type="password" placeholder="Password"  name="password" id="spassword">
-                                        </div>
+                                    <p>Sign Up and start saving properties in your My Saved. Please fill out the following:<br/></p>
+                                        <div class="form-group field-group">
+                                            <div class="input-user input-icon">
+                                                <input type="text" placeholder="Name" name="first_name" id="sfirst_name" required>
+                                            </div>
+                                            <div class="input-email input-icon">
+                                                <input type="email" placeholder="Email"  name="email" id="semail" required>
+                                            </div>
+                                            <div class="input-pass input-icon">
+                                                <input type="password" placeholder="Password"  name="password" id="spassword" required>
+                                            </div>
 
-                                    </div>
-                                    <div class="g-recaptcha" data-sitekey="6LduCUAUAAAAAEJrkvGVCtbiqhZIp0CENvpj_OR1"></div>
-                                    <button type="submit" class="btn btn-primary btn-block" id="nextid" style="margin-top:15px;">Sign Up</button>
+                                            <div class="input-user input-icon" style="border-bottom: 1px solid #cccccc">
+                                                <input type="text" placeholder="Age" name="age" id="age">
+                                            </div>
+
+                                            <div style="margin-top: 20px;margin-bottom: 20px">
+                                                <select name="marital_status" style="width: 100%;height: 45px;">
+                                                    <option value="">-- Marital Status --</option>
+                                                    <option value="Unmarried">Unmarried</option>
+                                                    <option value="Married">Married</option>
+                                                </select>
+                                            </div>
+
+                                            <div style="margin-bottom: 20px">
+                                                <select name="have_children" style="width: 100%;height: 45px;">
+                                                    <option value="">-- Do you have a children? --</option>
+                                                    <option value="Yes">Yes</option>
+                                                    <option value="No">No</option>
+                                                </select>
+                                            </div>
+
+                                            <div>
+                                                <select name="profession" style="width: 100%;height: 45px;">
+                                                    <option value="">-- Profession --</option>
+                                                    <option value="Teacher">Teacher</option>
+                                                    <option value="Student">Student</option>
+                                                    <option value="Doctor">Doctor</option>
+                                                    <option value="Engineer">Engineer</option>
+                                                    <option value="Banker">Banker</option>
+                                                </select>
+                                            </div>
+
+                                            {{--<div class="input-user">
+                                                    <div class="row">
+                                                        <div class="col-lg-6 col-md-6">
+                                                            <input type="text" placeholder="Age" name="age" id="age">
+                                                        </div>
+                                                        <div class="col-lg-6 col-md-6">
+                                                            <select name="marital_status">
+                                                                <option value="">-- Select --</option>
+                                                                <option value="Unmarried">Unmarried</option>
+                                                                <option value="Married">Married</option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                            </div>--}}
+
+                                        </div>
+                                        {{--<button type="submit" class="btn btn-primary btn-block" style="margin-top:15px;">Sign Up</button>--}}
+                                    <input type="submit" class="btn btn-primary btn-block" style="margin-top:15px;" value="Sign Up">
+
                                 </div>
                             </div>
                         </form>
@@ -176,8 +220,8 @@
             <nav class="navi main-nav">
                 <ul>
                     <li><a href="{{ url('/') }}">Home</a></li>
-                    <li><a href="{{ url('/') }}search?property_type=Residential&city_zip=<?php echo 'Dallas, TX' ?>">Search New Homes</a></li>
-                    <li><a href="{{ url('/') }}contact">Support Contact</a></li>
+                    <li><a href="{{ url('/') }}/search?property_type=Residential&city_zip=<?php echo 'Dallas, TX' ?>">Search New Homes</a></li>
+                    <li><a href="{{ url('/') }}/contact">Support Contact</a></li>
 
                 </ul>
                 </li>
@@ -185,24 +229,30 @@
             </nav>
         </div>
         <div class="header-right">
-            {{--<div class="user">
-                <?php if(!empty($_SESSION['front_user'])): ?>
-                <nav class="navi main-nav">
-                    <ul class="sub-menu">
-                        <li>
-                            <a href="#">User Settings</a>
-                            <ul class="sub-menu" style="width:auto">
-                                <li><a href="{{ url('/') }}my-profile/">My Profile</a></li>
-                                <li><a href="{{ url('/') }}my-saved/">My Saved</a></li>
-                                <li><a href="{{ url('/') }}logout/">Logout</a></li>
+            <div class="user">
+                @if(auth()->check())
+                    @if(auth()->user())
+                        <nav class="navi main-nav">
+                            <ul class="sub-menu">
+                                <li>
+                                    <a href="#">User Settings</a>
+                                    <ul class="sub-menu" style="width:auto">
+                                        <li><a href="{{ url('/') }}/profile">My Profile</a></li>
+                                        <li>
+                                            <form action="{{ route('signout') }}" method="post" id="logout_form">
+                                                @csrf
+                                                <a style="cursor: pointer"  onclick="getLogout()">Logout</a>
+                                            </form>
+                                        </li>
+                                    </ul>
+                                </li>
                             </ul>
-                        </li>
-                    </ul>
-                </nav>
-                <?php else: ?>
-                <a href="#" data-toggle="modal" data-target="#pop-login">Sign In / Sign Up</a>
-            <?php endif; ?>
-            </div>--}}
+                        </nav>
+                    @endif
+                @else
+                    <a href="#" data-toggle="modal" data-target="#pop-login">Sign In / Sign Up</a>
+                @endif
+            </div>
         </div>
     </div>
 </header>
@@ -296,6 +346,10 @@
         </div>
     </div>
 </footer>
+
+<div class="addto-cart-alert">
+    {{ session('message') }}
+</div>
 <!--end footer section-->
 <script type="text/javascript" src="{{ asset('js/jquery.js') }}"></script>
 <script type="text/javascript" src="{{ asset('js/moment.js') }}"></script>
@@ -308,8 +362,10 @@
 <script type="text/javascript" src="{{ asset('js/isotope.pkgd.min.js') }}"></script>
 <script type="text/javascript" src="{{ asset('js/jquery.nicescroll.js') }}"></script>
 <script type="text/javascript" src="{{ asset('js/bootstrap-datetimepicker.min.js') }}"></script>
-<script type="text/javascript" src="{{ asset('js/custom.js') }}"></script>
+<script type="text/javascript" src="{{ asset('js/slick.min.js') }}">
 <script type="text/javascript" src="{{ asset('js/slick.js') }}"></script>
+<script type="text/javascript" src="{{ asset('js/custom.js') }}"></script>
+@yield('javascript')
 <script>
     var didsignedup = '';
     function checkUniqueEmail() {
@@ -445,6 +501,17 @@
     }
 
     jQuery(function(){
+
+        @if(!empty(session('message')))
+            setTimeout(function() {
+                jQuery(".addto-cart-alert").show('slow');
+            }, 500);
+
+            setTimeout(function() {
+                jQuery(".addto-cart-alert").hide('slow');
+            }, 4000);
+        @endif
+
         $('#nextid').bind('click',function(e){
             formvalidation();
             e.preventDefault();
@@ -525,6 +592,10 @@
             source: availableTags
         });
     });
+
+    function getLogout(){
+        jQuery("#logout_form").submit();
+    }
 </script>
 
 </body>

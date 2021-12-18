@@ -17305,3 +17305,25 @@ input[type="button"].btn-block {
 .show_later{
     display: none;
 }
+
+.addto-cart-alert {
+    position: absolute;
+    top: 27px;
+    right: 20px;
+    width: 350px;
+    background-color: yellow;
+    color: #000;
+    padding: 10px 15px;
+    border-radius: 10px;
+    font-weight: bold;
+    display: none;
+    z-index: 10000;
+}
+
+.addto-cart-alert.none {
+    display: none !important;
+}
+
+.addto-cart-alert.show {
+    display: block !important;
+}

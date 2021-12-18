@@ -1,16 +1,16 @@
-<?php 
-	require_once('includes/config.inc.php'); 
+<?php
+	require_once('includes/config.inc.php');
 	include('includes/pager.class.php');
-	
+
 	function kmprice($value) {
 		$finstr = '';
 		if(strlen(trim($value))>6) {
 			  $ab = '$'.number_format($value/1000000, 2, '.', '');
 			 if(strstr($ab,'.')==00) {
 				$ac = explode('.',$ab);
-				$finstr .= $ac[0].'M';	
+				$finstr .= $ac[0].'M';
 			}
-			else 
+			else
 				$finstr .= $ab.'M';
 		}
 		else if(strlen(trim($value))<=4) {
@@ -21,7 +21,7 @@
 		}
 		return $finstr;
 	}
-	
+
 	//print_r($_REQUEST);
 	$query_string = '';
 	$sel_table = '';
@@ -42,100 +42,100 @@
 		$proptype = 'For Sale';
 		$query_string .= '&prop_type=for_sale';
 	}
-	
+
 	$query_str = ' 1=1 ';
 	if(!empty($_REQUEST['city_zip_mls'])) {
 		if(is_numeric(trim($_REQUEST['city_zip_mls']))) {
 			if(strlen(trim($_REQUEST['city_zip_mls'])) == 8) {
-				$query_str .= " and MLSNUM='".trim($_REQUEST['city_zip_mls'])."'";	
+				$query_str .= " and MLSNUM='".trim($_REQUEST['city_zip_mls'])."'";
 			}
 			else {
-				$query_str .= " and ZIPCODE='".trim($_REQUEST['city_zip_mls'])."'";	
+				$query_str .= " and ZIPCODE='".trim($_REQUEST['city_zip_mls'])."'";
 			}
 		}
 		else {
-			$query_str .= " and CITY='".trim($_REQUEST['city_zip_mls'])."'";	
+			$query_str .= " and CITY='".trim($_REQUEST['city_zip_mls'])."'";
 		}
 		$query_string .= '&city_zip_mls='.$_REQUEST['city_zip_mls'];
 	}
-	
+
 	if(!empty($_REQUEST['address_mls_zip'])) {
-		if(!strstr($_GET['address_mls_zip'],' ')) {	
+		if(!strstr($_GET['address_mls_zip'],' ')) {
 			$query_str .= " and ZIPCODE like '%".$_GET['address_mls_zip']."%'";
 		}
 		else {
 			if(strstr($_GET['address_mls_zip'],' ')) {
 				$mlsarr = explode(' ',$_GET['address_mls_zip']);
 				if(!empty($mlsarr[0]))
-					$query_str .= " and STREETNUM ='".$mlsarr[0]."'";	
-				
+					$query_str .= " and STREETNUM ='".$mlsarr[0]."'";
+
 				if(!empty($mlsarr[1]))
-					$query_str .= " and STREETNAME like'%".$mlsarr[1]."%'";		
-			}	
-		}	
+					$query_str .= " and STREETNAME like'%".$mlsarr[1]."%'";
+			}
+		}
 		$query_string .= '&address_mls_zip='.$_REQUEST['address_mls_zip'];
 	}
-	
+
 	if(!empty($_REQUEST['city'])) {
-		$query_str .= " and CITY ='".$_REQUEST['city']."'";	
-		$query_string .= '&city='.$_REQUEST['city'];	
+		$query_str .= " and CITY ='".$_REQUEST['city']."'";
+		$query_string .= '&city='.$_REQUEST['city'];
 	}
-	
+
 	if(!empty($_REQUEST['min_built_year'])) {
-		$query_str .= " and YEARBUILT >='".$_REQUEST['min_built_year']."'";	
-		$query_string .= '&min_built_year='.$_REQUEST['min_built_year'];	
+		$query_str .= " and YEARBUILT >='".$_REQUEST['min_built_year']."'";
+		$query_string .= '&min_built_year='.$_REQUEST['min_built_year'];
 	}
-	
-	
+
+
 	if(!empty($_REQUEST['min_sqft'])) {
-		$query_str .= " and SQFTTOTAL >='".$_REQUEST['min_sqft']."'";	
-		$query_string .= '&min_sqft='.$_REQUEST['min_sqft'];	
+		$query_str .= " and SQFTTOTAL >='".$_REQUEST['min_sqft']."'";
+		$query_string .= '&min_sqft='.$_REQUEST['min_sqft'];
 	}
 	if(!empty($_REQUEST['max_sqft'])) {
-		$query_str .= " and SQFTTOTAL <='".$_REQUEST['max_sqft']."'";	
-		$query_string .= '&min_sqft='.$_REQUEST['min_sqft'];	
+		$query_str .= " and SQFTTOTAL <='".$_REQUEST['max_sqft']."'";
+		$query_string .= '&min_sqft='.$_REQUEST['min_sqft'];
 	}
-	
+
 	if(!empty($_REQUEST['min_beds'])) {
-		$query_str .= " and BEDS >='".$_REQUEST['min_beds']."'";	
-		$query_string .= '&min_beds='.$_REQUEST['min_beds'];	
+		$query_str .= " and BEDS >='".$_REQUEST['min_beds']."'";
+		$query_string .= '&min_beds='.$_REQUEST['min_beds'];
 	}
 	if(!empty($_REQUEST['min_baths'])) {
-		$query_str .= " and BATHSFULL >='".$_REQUEST['min_baths']."'";	
-		$query_string .= '&min_baths='.$_REQUEST['min_baths'];	
+		$query_str .= " and BATHSFULL >='".$_REQUEST['min_baths']."'";
+		$query_string .= '&min_baths='.$_REQUEST['min_baths'];
 	}
 	if(!empty($_REQUEST['min_garage'])) {
-		$query_str .= " and GARAGECAP >='".$_REQUEST['min_garage']."'";		
+		$query_str .= " and GARAGECAP >='".$_REQUEST['min_garage']."'";
 		$query_string .= '&min_garage='.$_REQUEST['min_garage'];
 	}
-	
-	
+
+
 	if(!empty($_REQUEST['new_listing'])) {
 		$query_str .= " and created  <> '' and created>'".date('Y-m-d H:i:s',(time()-(7*86400)))."'";
 		$query_string .= '&new_listing='.$_REQUEST['new_listing'];
 	}
-	
+
 	if(!empty($_REQUEST['price_reduced'])) {
 		$query_str .= " and LISTPRICE < LISTPRICEORIG ";
 		$query_string .= '&price_reduced='.$_REQUEST['price_reduced'];
 	}
-	
+
 	if(!empty($_REQUEST['open_house'])) {
 		$query_str .= " and OPENHOUSEDATE >= '".date('Y-m-d')."'";
 		$query_string .= '&open_house='.$_REQUEST['open_house'];
 	}
-	
+
 	if(!empty($_REQUEST['pool'])) {
 		$query_str .= " and POOLYN <>'' ";
 		$query_string .= '&pool='.$_REQUEST['pool'];
 	}
-	
+
 	if(!empty($_REQUEST['two_storied'])) {
 		$query_str .=  " and STORIES >= 2 ";
 		$query_string .= '&two_storied='.$_REQUEST['two_storied'];
 	}
-	
-	
+
+
 	if(!empty($_REQUEST['min_price']) && empty($_REQUEST['max_price']))
 	{
 		$query_str .= " and ListPrice >=".$_REQUEST['min_price'];
@@ -151,48 +151,48 @@
 		$query_str .= " and ListPrice >=".$_REQUEST['min_price']." and ListPrice <=".$_REQUEST['max_price'];
 		$query_string .= '&min_price='.$_REQUEST['min_price'].'&max_price='.$_REQUEST['max_price'];
 	}
-	
+
 	$query_str .= " and liststatus='Active' and mlsnum<>'13340274' and (LATITUDE IS NOT NULL AND LATITUDE <> '') order by LISTPRICE desc";
-	
+
 	//$sql_str = "SELECT BATHSFULL,BATHSHALF,BATHSTOTAL,STREETNUM,STREETDIR,STREETNAME,STREETTYPE,CITY,STATE,ZIPCODE,BEDS,GARAGECAP,SQFTTOTAL,MLSNUM,LISTPRICE,LATITUDE,LONGITUDE,PHOTO_URL,permalink,PHOTOCOUNT FROM ".$sel_table." where ".$query_str;
 	$sql_str = "SELECT SQL_CALC_FOUND_ROWS BATHSFULL,BATHSHALF,BATHSTOTAL,STREETNUM,STREETDIR,STREETNAME,STREETTYPE,CITY,STATE,ZIPCODE,BEDS,GARAGECAP,SQFTTOTAL,MLSNUM,LISTPRICE,LATITUDE,LONGITUDE,photo1_url,permalink,PHOTOCOUNT FROM ".$sel_table." where ".$query_str;
-	
+
 	$p = (isset($_GET['page'])) ? $_GET['page'] : 1;
-	
+
 	$o__pager = new pager($sel_table,$p ,50,'',$sql_str  );
-	$q = $o__pager->getQuery();	
-	
-	
+	$q = $o__pager->getQuery();
+
+
 	//$result = mysql_query("SELECT MLSNUM FROM ".$sel_table." where ".$query_str);
 	$resultID2 = mysql_query("SELECT FOUND_ROWS() as total");
 	$listing_array2 = mysql_fetch_assoc($resultID2);
-	
-	
-	
+
+
+
 	while($row = mysql_fetch_assoc($q)) {
 		$propLists[] = $row;
 	}
-	
+
 ?>
 <?php $j=1; $str = '';
 		foreach($propLists as $propList) {
 			$fin_bath_room = '';
 			$totalbaths = '';
-			if(!empty($propList['BATHSFULL'])) 
-				$fin_bath_room .= $propList['BATHSFULL'];	
-			if(!empty($propList['BATHSHALF'])) 
-				$fin_bath_room .= '.'.$propList['BATHSHALF'];	
-				
-			
-			if(!empty($propList['BATHSTOTAL'])):		
+			if(!empty($propList['BATHSFULL']))
+				$fin_bath_room .= $propList['BATHSFULL'];
+			if(!empty($propList['BATHSHALF']))
+				$fin_bath_room .= '.'.$propList['BATHSHALF'];
+
+
+			if(!empty($propList['BATHSTOTAL'])):
 				$totalbaths = $propList['BATHSTOTAL'];
 			else:
 				$totalbaths = $fin_bath_room;
-			endif;		
-			
-			
+			endif;
+
+
 			$tmp_addr = $propList['STREETNUM'].' '.$propList['STREETDIR'].' '.$propList['STREETNAME'].' '.$propList['STREETTYPE'].'<br/>'.$propList['CITY'].' '.$propList['STATE'].' '.$propList['ZIPCODE'].'<br/>'.$propList['BEDS'].(($propList['BEDS']>1)?' Beds':' Bed').'&nbsp;&nbsp;'.$totalbaths.(($totalbaths>1)?' Baths':' Bath').'&nbsp;&nbsp;'.$propList['GARAGECAP'].(($propList['GARAGECAP']>1)?' Garages':' Garage').'<br/>'.number_format($propList['SQFTTOTAL']).' Sqft&nbsp;&nbsp;MLS: '.$propList['MLSNUM'];
-			
+
 			$str .= '{"id": '.$j.',"title": "'.strstr(money_format('%n', $propList['LISTPRICE']),'.',true).'","latitude":'.$propList['LATITUDE'].',"longitude":'.$propList['LONGITUDE'].',"image":"'.str_replace('http://matrixrets.ntreis.net/Rets/GetRetsMedia.ashx','http://matrixmedia.ntreis.net/mediaserver/GetMedia.ashx',$propList['photo1_url']).'","description":"'.$tmp_addr.'","link":"'.site_url.'property_details/'.$propList['permalink'].'/'.str_replace(' ','-',$proptype).'","map_marker_icon":"'.site_url.'images/markers/coral-marker-residential.png"},';
 		$j++; } $str = substr_replace($str, "", -1); ?>
 <!DOCTYPE html>
@@ -206,9 +206,7 @@
     <meta name="description" content="Houzez HTML5 Template">
     <meta name="author" content="Favethemes">
 
-    <link rel="apple-touch-icon" sizes="144x144" href="<?php echo site_url?>images/favicons/apple-touch-icon.png">
-    <link rel="icon" type="image/png" href="<?php echo site_url?>images/favicons/favicon-32x32.png" sizes="32x32">
-    <link rel="icon" type="image/png" href="<?php echo site_url?>images/favicons/favicon-16x16.png" sizes="16x16">
+
     <link rel="manifest" href="<?php echo site_url?>images/favicons/manifest.json">
     <link rel="mask-icon" href="<?php echo site_url?>images/favicons/safari-pinned-tab.svg" >
     <meta name="theme-color" content="#ffffff">
@@ -333,10 +331,10 @@
       height: 40px;
       cursor: pointer;
     }
-	
-	
-	 
-	 
+
+
+
+
 	.gm-style-iw {
 		width: 300px !important;
 		top: 0px !important;
@@ -358,7 +356,7 @@
 	}
 	.iw-content img {
 		float: right;
-		margin: 0 5px 5px 10px;	
+		margin: 0 5px 5px 10px;
 	}
 	.iw-subTitle {
 		padding: 5px 0;
@@ -370,7 +368,7 @@
 		bottom: 10px;
 		right: 18px;
 	}
-	 
+
  	.gm-style-iw + div {display: none;}
 </style>
 <div class="header-mobile visible-sm visible-xs">
@@ -415,7 +413,7 @@
                                 </div>
                             </div>-->
                             <div id="map-canvas"></div>
-                            
+
                             <!--<div  class="map-arrows-actions">
                                 <button id="listing-mapzoomin" class="map-btn"><i class="fa fa-plus"></i> </button>
                                 <button id="listing-mapzoomout" class="map-btn"><i class="fa fa-minus"></i></button>
@@ -892,14 +890,14 @@
                                     <span class="view-btn btn-grid"><i class="fa fa-th-large"></i></span>
                                 </div>
                             </div>
-                            
+
                             <!--<div id="markers_info">
                                 <div class="marker">Manneken Pis,   50.84498605,4.349977747</div>
                                 <div class="marker">Jeanneke Pis,   50.84848913,4.354053363</div>
                                 <div class="marker">Grand Place,    50.84673465,4.352466166</div>
                                 <div class="marker">Preston Office, 32.85333440000001,-96.80425249999999</div>
                             </div>-->
-                            
+
                             <!--end list tabs-->
                             <div class="property-listing list-view">
                                 <div class="row" id="markers_info">
@@ -954,8 +952,8 @@
                                                     </figure>
                                                 </div>
                                             </div>
-                                		<?php endforeach; ?>   
-                                	<?php endif; ?>         
+                                		<?php endforeach; ?>
+                                	<?php endif; ?>
                                 </div>
                             </div>
                         </div>
@@ -967,23 +965,23 @@
         </div>
     </section>
     <!--end section page body-->
-    
+
     <?php include_once('footer.php'); ?>
 <script type='text/javascript' src='https://maps.googleapis.com/maps/api/js?key=AIzaSyAFqAPWaxVQnJMkCBEHvlP1fIqevvgoN44&#038;libraries=geometry%2Cplaces%2Cdrawing&#038;ver=4.7.4'></script>
     <script type="text/javascript" src="<?php echo site_url ?>js/bootstrap-datetimepicker.min.js"></script>
 	<!--<script type="text/javascript" src="js/masonry.pkgd.min.js"></script>-->
     <script type="text/javascript" src="<?php echo site_url ?>js/infobox.js"></script>
     <script type="text/javascript" src="<?php echo site_url ?>js/markerclusterer.js"></script>
-    
-    
-    
+
+
+
     <script type="text/javascript">
 
         /*(function($){
             var theMap;
             function initMap() {
 
-               
+
                 var properties = [{
                     id: 294,
                     title: "Penthouse apartment",
@@ -1270,7 +1268,7 @@
                 //theMap.controls[google.maps.ControlPosition.TOP_LEFT].push(input);
 
                 // Bias the SearchBox results towards current map's viewport.
-                
+
 
                 //var markers_location = [];
                 // Listen for the event fired when the user selects a prediction and retrieve
@@ -1284,45 +1282,45 @@
 
             google.maps.event.addDomListener( window, 'load', initMap );
         })(jQuery)*/
-		
+
 		jQuery(document).ready(function() {
 			// initiate Google maps
 			initialize();
-			
+
 			google.maps.event.addListener(infowindow, 'domready', function() {
 
 				   // Reference to the DIV which receives the contents of the infowindow using jQuery
 				   var iwOuter = jQuery('.gm-style-iw');
-				
+
 				   /* The DIV we want to change is above the .gm-style-iw DIV.
 					* So, we use jQuery and create a iwBackground variable,
 					* and took advantage of the existing reference to .gm-style-iw for the previous DIV with .prev().
 					*/
 				   var iwBackground = iwOuter.prev();
-				
+
 				   // Remove the background shadow DIV
 				   iwBackground.children(':nth-child(2)').css({'display' : 'none'});
-				
+
 				   // Remove the white background DIV
 				   iwBackground.children(':nth-child(4)').css({'display' : 'none'});
-				
+
 				});
-			
+
 			// make a .hover event
-			jQuery('#markers_info .item-wrap').hover( 
+			jQuery('#markers_info .item-wrap').hover(
 			  // mouse in
 			  function () {
 				// first we need to know which <div class="marker"></div> we hovered
-				
-				
-				
+
+
+
 				var index = jQuery('#markers_info .item-wrap').index(this);
-				
+
 				if (that) {
 					that.setZIndex();
 				}
 				that = markers[index];
-				
+
 				markers[index].setIcon(highlightedIcon());
 				markers[index].setZIndex(google.maps.Marker.MAX_ZINDEX + 1);
 				//this.setZIndex(google.maps.Marker.MAX_ZINDEX + 1);
@@ -1333,7 +1331,7 @@
 				var index = jQuery('#markers_info .item-wrap').index(this);
 				markers[index].setIcon(normalIcon());
 			  }
-		
+
 			);
 		  });
 		  /**
@@ -1350,15 +1348,15 @@
 			<?php if(!empty($propLists)): $str = ''; ?>
               	<?php foreach($propLists as $propList): ?>
 					<?php $str .= "{lat: ".$propList['LATITUDE'].", lng: ".$propList['LONGITUDE'].", title: '".kmprice($propList['LISTPRICE'])."', price: '".$propList['LISTPRICE']."', image: '".$propList['photo1_url']."', mlsnum: '".$propList['MLSNUM']."'},"; ?>
-				<?php endforeach; ?>   
-            <?php endif; $str = substr($str, 0, -1); ?>      
-			
+				<?php endforeach; ?>
+            <?php endif; $str = substr($str, 0, -1); ?>
+
 			var markerData = [   // the order of these markers must be the same as the <div class="marker"></div> elements
 			  <?php echo $str ?>
 			];
-			
+
 			//alert(markerData);
-			
+
 			var map;
 			var that;
 			var markers = [];
@@ -1369,27 +1367,27 @@
 			  center: new google.maps.LatLng(<?php echo $propLists[0]['LATITUDE'] ?>,<?php echo $propLists[0]['LONGITUDE'] ?>),  // Brussels, Belgium
 			  mapTypeId: google.maps.MapTypeId.ROADMAP
 			};
-			
+
 			function addInfoWindow(marker, message) {
-				
+
 				var infoWindow = new google.maps.InfoWindow({
 					content: message
 				});
-				
+
 				google.maps.event.addListener(marker, 'click', function () {
 					if (infoWindow_arr) {
 						infoWindow_arr.close();
 					}
-					
+
 					var index = jQuery('#markers_info .item-wrap').index(this);
-					
+
 					//prevIndex = index;
 					/*if (prevIndex) {
 						prevIndex.setIcon(normalIcon());
 					}*/
-					
+
 					infoWindow.open(map, marker);
-					
+
 					if (that) {
 						that.setZIndex();
 						that.setIcon(normalIcon());
@@ -1397,21 +1395,21 @@
 					}
 					that = marker;
 					marker.setZIndex(google.maps.Marker.MAX_ZINDEX + 1);
-					
+
 					marker.setIcon(highlightedIcon());
-					
+
 					infoWindow_arr = infoWindow;
 				});
-				
+
 				google.maps.event.addListener(map, "click", function(event) {
 					infoWindow.close();
 				});
-				
-				
-				
-				
-				
-				
+
+
+
+
+
+
 	google.maps.event.addListener(infoWindow, 'domready', function() {
 
     // Reference to the DIV that wraps the bottom of infowindow
@@ -1458,17 +1456,17 @@
     });
   });
 	}
-		
+
 			function initialize() {
 			  map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
-			  
+
 			  //google.maps.Icon.labelOrigin = "top-left";
-			  
+
 			  var bounds = new google.maps.LatLngBounds();
-			  
+
 			  for (var i=0; i<markerData.length; i++) {
 				//markers.push(
-				  
+
 				  var marker = new google.maps.Marker({
 					position: new google.maps.LatLng(markerData[i].lat, markerData[i].lng),
 					title: markerData[i].title,
@@ -1477,32 +1475,32 @@
 					icon: normalIcon()
 				  })
 				//);
-				
+
 				markers[i] = marker;
 				//addInfoWindow(marker, "<h3>"+markerData[i].title+"</h3>");
 				addInfoWindow(marker, '<div class="item-wrap"><div class="property-item-grid"><figure class="item-thumb"><a href="#" class="hover-effect"><img src="'+markerData[i].image+'" width="290" style="width:290px;" alt="thumb"></a><div class="label-wrap label-left"><span class="label label-success">Featured</span><span class="label label-danger">Open House</span></div><div class="price"><span class="item-price">'+markerData[i].price+'</span><span class="item-sub-price">$21,000/mo</span></div><ul class="actions"><li><span title="" data-placement="top" data-toggle="tooltip" data-original-title="Favorite"><i class="fa fa-heart"></i></span></li><li class="share-btn"><div class="share_tooltip fade"><a target="_blank" href="#"><i class="fa fa-facebook"></i></a><a target="_blank" href="#"><i class="fa fa-twitter"></i></a><a target="_blank" href="#"><i class="fa fa-google-plus"></i></a><a target="_blank" href="#"><i class="fa fa-pinterest"></i></a></div><span title="" data-placement="top" data-toggle="tooltip" data-original-title="share"><i class="fa fa-share-alt"></i></span></li><li><span data-toggle="tooltip" data-placement="top" title="Photos (12)"><i class="fa fa-camera"></i></span></li></ul><div class="item-caption"><div class="label-wrap"><span class="label label-primary">For Sale</span></div><h4 class="item-caption-title">Luxury apartment bay view</h4><ul class="item-caption-list"><li>2 bd</li><li>3 ba</li><li>1,287 sqft</li></ul></div></figure></div></div>');
-				
+
 				/*var infowindow = new google.maps.InfoWindow({
 				  content: "<h3>"+markerData[i].title+"</h3>"
 				});
-		
+
 				marker.addListener('click', function() {
 				  infowindow.open(map, marker);
 				});*/
-				
-				
-		
-				
+
+
+
+
 				bounds.extend(new google.maps.LatLng(markerData[i].lat, markerData[i].lng));
 			  }
-			  
-			  
+
+
 			  map.fitBounds(bounds);
 			}
-			
-			
-			
-			
+
+
+
+
 
 			// functions that return icons.  Make or find your own markers.
 			function normalIcon() {
