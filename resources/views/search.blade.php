@@ -699,10 +699,10 @@
                                             </select>
                                         </div>
                                         <div class="col-md-6 col-sm-6 col-xs-6" style="padding-right:0px;">
-                                            <label for="min_built_year">Year Built</label>
+                                            <label for="min_built_year">Minimum Year Built</label>
                                             <select class="selectpicker" id="min_built_year" data-live-search="false" data-live-search-style="begins" title="Any" name="min_built_year">
                                                 @for($i=date('Y'); $i>=1990;$i--)
-                                                    <option value="<?php echo $i ?>" @if(app('request')->input('min_built_year') == $i) ?> selected @endif><?php echo $i ?></option>
+                                                    <option value="<?php echo $i ?>" @if(app('request')->input('min_built_year') == $i)  selected @endif><?php echo $i ?></option>
                                                 @endfor
                                             </select>
                                         </div>
@@ -797,7 +797,7 @@
                                 <div class="col-md-6 col-sm-6 col-xs-6">
                                     <span style="display: inline-block; margin-top: 6px;font-size:14px;">Quick Move-In</span>
                                     <label class="switch">
-                                        <input type="checkbox" name="quick_move_in" id="quick_move_in" value="1" @if(app('request')->input('quick_move_in') =='1') ?> checked @endif>
+                                        <input type="checkbox" name="quick_move_in" id="quick_move_in" value="1" @if(app('request')->input('quick_move_in') =='1')  checked @endif>
                                         <div class="slider round"></div>
                                     </label>
                                 </div>
@@ -805,21 +805,21 @@
                                 <div class="col-md-6 col-sm-6 col-xs-6">
                                     <span style="display: inline-block; margin-top: 6px;font-size:14px;">New Listing</span>
                                     <label class="switch">
-                                        <input type="checkbox" name="new_listing" id="new_listing" value="1" @if(app('request')->input('new_listing') =='1') ?> checked @endif>
+                                        <input type="checkbox" name="new_listing" id="new_listing" value="1" @if(app('request')->input('new_listing') =='1')  checked @endif>
                                         <div class="slider round"></div>
                                     </label>
                                 </div>
                                 <div class="col-md-6 col-sm-6 col-xs-6" >
                                     <span style="display: inline-block; margin-top: 6px;font-size:14px;">Open House</span>
                                     <label class="switch">
-                                        <input type="checkbox" name="open_house" id="open_house" value="1" @if(app('request')->input('open_house') =='1') ?> checked @endif>
+                                        <input type="checkbox" name="open_house" id="open_house" value="1" @if(app('request')->input('open_house') =='1')  checked @endif>
                                         <div class="slider round"></div>
                                     </label>
                                 </div>
                                 <div class="col-md-6 col-sm-6 col-xs-6">
                                     <span style="display: inline-block; margin-top: 6px;font-size:14px;">Two Story</span>
                                     <label class="switch">
-                                        <input type="checkbox" name="two_storied" id="two_storied" value="1" @if(app('request')->input('two_storied') =='1') ?> checked @endif>
+                                        <input type="checkbox" name="two_storied" id="two_storied" value="1" @if(app('request')->input('two_storied') =='1')  checked @endif>
                                         <div class="slider round"></div>
                                     </label>
                                 </div>
@@ -833,7 +833,7 @@
                                 <div class="col-md-6 col-sm-6 col-xs-6">
                                     <span style="display: inline-block; margin-top: 6px;font-size:14px;">Lots Only</span>
                                     <label class="switch">
-                                        <input type="checkbox" name="lots_only" id="lots_only" value="1" @if(app('request')->input('lots_only') =='1') ?> checked @endif>
+                                        <input type="checkbox" name="lots_only" id="lots_only" value="1" @if(app('request')->input('lots_only') =='1')  checked @endif>
                                         <div class="slider round"></div>
                                     </label>
                                 </div>
@@ -1115,8 +1115,8 @@
             jQuery("select#property_type").val('');
             jQuery('select#property_type').selectpicker('refresh');
 
-            jQuery("select#lot_size").val('');
-            jQuery('select#lot_size').selectpicker('refresh');
+            /*jQuery("select#lot_size").val('');
+            jQuery('select#lot_size').selectpicker('refresh');*/
 
             jQuery("select#min_garage").val('');
             jQuery('select#min_garage').selectpicker('refresh');
@@ -1129,6 +1129,12 @@
 
             jQuery("select#max_square_footage").val('');
             jQuery('select#max_square_footage').selectpicker('refresh');
+
+            jQuery("select#minlot").val('');
+            jQuery('select#minlot').selectpicker('refresh');
+
+            jQuery("select#maxlot").val('');
+            jQuery('select#maxlot').selectpicker('refresh');
 
 
             jQuery('#new_listing').attr('checked', false);
@@ -1148,6 +1154,8 @@
 
             jQuery('#pool_check').attr('checked', false);
             jQuery('#views').attr('checked', false);
+
+            jQuery('#lots_only').attr('checked', false);
 
             jQuery('#waterfront').attr('checked', false);
             jQuery('#club_house').attr('checked', false);
@@ -1634,14 +1642,14 @@
         // functions that return icons.  Make or find your own markers.
         function normalIcon() {
             return {
-                url: 'http://buildentory.com/images/pin1.png',
-                labelOrigin: new google.maps.Point(38, 10)
+                url: 'http://localhost:8888/yourexpertagent/public/images/pin1.png',
+                labelOrigin: new google.maps.Point(24, 11)
             };
         }
         function highlightedIcon() {
             return {
-                url: 'http://buildentory.com/images/pin2.png',
-                labelOrigin: new google.maps.Point(38, 10)
+                url: 'http://localhost:8888/yourexpertagent/public/images/pin2.png',
+                labelOrigin: new google.maps.Point(24, 11)
             };
         }
 

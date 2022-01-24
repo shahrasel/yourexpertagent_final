@@ -221,7 +221,7 @@
                 <ul>
                     <li><a href="{{ url('/') }}">Home</a></li>
                     <li><a href="{{ url('/') }}/search?property_type=Residential&city_zip=<?php echo 'Dallas, TX' ?>">Search New Homes</a></li>
-                    <li><a href="{{ url('/') }}/contact">Support Contact</a></li>
+                    <li><a href="{{ url('/') }}/compare-properties">Compare Properties</a></li>
 
                 </ul>
                 </li>
@@ -526,47 +526,6 @@
         })
     });
 
-    function add_remove_fav(userid,mlsnum,proptype) {
-        //alert(userid+'--'+mlsnum+'--'+proptype);
-        jQuery.ajax({
-            type: 'POST',
-            url: '{{ url('/') }}ajax/add_remove_fav.php',
-            data: {
-                userid: userid,
-                mlsnum: mlsnum,
-                proptype: proptype
-            },
-            success: function(data, textStatus, XMLHttpRequest){
-                if(data == 'added') {
-                    jQuery('#add_remove_fav_'+mlsnum+' span').attr('id', 'sel');
-                }
-                else if(data == 'removed') {
-                    jQuery('#add_remove_fav_'+mlsnum+' span#sel').removeAttr('id');
-                }
-            }
-        });
-    }
-
-    function add_remove_communities_fav(userid,community_id,proptype) {
-        //alert(userid+'--'+mlsnum+'--'+proptype);
-        jQuery.ajax({
-            type: 'POST',
-            url: '{{ url('/') }}ajax/add_remove_communities_fav.php',
-            data: {
-                userid: userid,
-                community_id: community_id,
-                proptype: 'communities'
-            },
-            success: function(data, textStatus, XMLHttpRequest){
-                if(data == 'added') {
-                    jQuery('#add_remove_communities_fav_'+community_id+' span').attr('id', 'sel');
-                }
-                else if(data == 'removed') {
-                    jQuery('#add_remove_communities_fav_'+community_id+' span#sel').removeAttr('id');
-                }
-            }
-        });
-    }
 
     function showMoreCities() {
         jQuery(".show_later").css('display','block');

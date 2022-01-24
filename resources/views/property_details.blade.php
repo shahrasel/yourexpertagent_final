@@ -25,36 +25,28 @@
                                 <ul class="actions">
                                     <li>
 
-                                    <?php  if(empty($_SESSION['front_user'])): ?>
-                                        <a href="#" data-toggle="modal" data-target="#pop-login"><span><i class="fa fa-heart-o"></i></span></a>
-                                    <?php else: ?>
+                                    <?php /* if(empty($_SESSION['front_user'])): */?>
+                                    <a href="#" id="add_to_fav_a" style="font-size: 30px;"><span><i class="fa fa-heart-o"></i></span></a>
+                                    <?php /*else: */?><!--
                                     <?php
-                                    $sql = mysql_query("select id,MLSNUM from bookmarks where user_id='".$_SESSION['front_user']['id']."' and MLSNUM = '".$property_info['MLSNUM']."' limit 1",$connn);
+/*                                    $sql = mysql_query("select id,MLSNUM from bookmarks where user_id='".$_SESSION['front_user']['id']."' and MLSNUM = '".$property_info['MLSNUM']."' limit 1",$connn);
                                     $saved_info = mysql_fetch_assoc ($sql);
-                                    ?>
-                                        <?php if(!empty($saved_info)): ?>
-                                        <a id="remove_fav" onClick="add_remove_fav('<?php echo $_SESSION['front_user']['id'] ?>','<?php echo $property_info['MLSNUM'] ?>','<?php echo $property_info['PROPTYPE'] ?>')"><span><i class="fa fa-heart" style="color: #ff0000"></i></span></a>
-                                        <?php else: ?>
-                                        <a id="add_fav" onClick="add_remove_fav('<?php echo $_SESSION['front_user']['id'] ?>','<?php echo $property_info['MLSNUM'] ?>','<?php echo $property_info['PROPTYPE'] ?>')"><span><i class="fa fa-heart"></i></span></a>
-                                        <?php endif; ?>
-                                        <?php endif; ?>
+                                    */?>
+                                        <?php /*if(!empty($saved_info)): */?>
+                                        <a id="remove_fav" onClick="add_remove_fav('<?php /*echo $_SESSION['front_user']['id'] */?>','<?php /*echo $property_info['MLSNUM'] */?>','<?php /*echo $property_info['PROPTYPE'] */?>')"><span><i class="fa fa-heart" style="color: #ff0000"></i></span></a>
+                                        <?php /*else: */?>
+                                        <a id="add_fav" onClick="add_remove_fav('<?php /*echo $_SESSION['front_user']['id'] */?>','<?php /*echo $property_info['MLSNUM'] */?>','<?php /*echo $property_info['PROPTYPE'] */?>')"><span><i class="fa fa-heart"></i></span></a>
+                                        <?php /*endif; */?>
+                                        --><?php /*endif; */?>
 
                                     </li>
                                 </ul>
                                 <span class="item-price">$<?php echo number_format($property_info['LISTPRICE']) ?></span>
-                                <?php
-                                $interestRate = 3.49;
-                                $monthlyInterest = $interestRate/(12*100);
-
-                                $fin_listprice = $property_info['LISTPRICE'] - ($property_info['LISTPRICE']*0.03);
-                                $monthlyPayment = ($fin_listprice*$monthlyInterest)/(1- pow((1+$monthlyInterest), -360));
-
-
-                                $ptax = $property_info['LISTPRICE']*0.018;
-                                $pins = $property_info['LISTPRICE']*0.004;
-                                $ppmi = $fin_listprice*0.00055;
-                                ?>
-                                {{--<span class="item-sub-price">$<?php echo number_format($monthlyPayment) ?>/mo</span>--}}
+                                @if($estimated_price ==0)
+                                    <span class="item-price">Est. Selling Price: N/A</span>
+                                @else
+                                    <span class="item-price">Est. Selling Price: $<?php echo number_format($estimated_price) ?></span>
+                                @endif
                             </div>
                         </div>
                     </div>
@@ -148,6 +140,21 @@
                                 <div class="detail-title">
                                     <h2 class="title-left">Property Highlights</h2>
                                 </div>
+                                @php
+                                    $sim_fin_bath_room = '';
+                                        $totalbaths = '';
+                                        if(!empty($property_info['BATHSFULL']))
+                                            $sim_fin_bath_room .= $property_info['BATHSFULL'];
+                                        if(!empty($property_info['BATHSHALF']))
+                                            $sim_fin_bath_room .= '.'.$property_info['BATHSHALF'];
+
+
+                                        if(!empty($property_info['BATHSTOTAL'])):
+                                            $totalbaths = $property_info['BATHSTOTAL'];
+                                        else:
+                                            $totalbaths = $sim_fin_bath_room;
+                                        endif;
+                                @endphp
                                 <div class="alert alert-info">
                                     <ul class="list-three-col list-features">
                                         <?php if(!empty($property_info['BEDS'])): ?><li><i class="fa fa-check"></i><?php echo $property_info['BEDS'] ?> Beds</li><?php endif; ?>
@@ -675,11 +682,11 @@
     }
     else if(auth()->user()->have_children =='Yes') {
         if(auth()->user()->age>65) {
-            //echo 'children+old';
+            //echo 'has children+old';
             $arr = ["bank", "book_store", "cafe", "clothing_store", "department_store", "drugstore", "hospital","jewelry_store","movie_theater","park", "pharmacy","restaurant", "shopping_mall","supermarket","tourist_attraction"];
         }
         else {
-            //echo 'children not old';
+            //echo 'has children not old';
             $arr = ["bank", "bar","book_store", "cafe", "clothing_store", "department_store", "drugstore", "hospital","jewelry_store","movie_theater","night_club", "park", "pharmacy","primary_school", "restaurant","secondary_school", "shopping_mall","stadium", "supermarket","tourist_attraction", "university"];
         }
     }
@@ -739,19 +746,6 @@
         jQuery(window).on('resize',function(){
             tabsHeight();
         });
-        /*function initialize() {
-
-            map = new google.maps.Map(document.getElementById('map'), mapOptions);
-            panorama = new google.maps.StreetViewPanorama(document.getElementById('street-map'), panoramaOptions);
-            map.setStreetView(panorama);
-
-            var image = 'https://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png';
-            var beachMarker = new google.maps.Marker({
-                position: {lat: <?php echo $property_info['LATITUDE'] ?>, lng: <?php echo $property_info['LONGITUDE'] ?>},
-                map: map,
-                //icon: image
-            });
-        }*/
 
         jQuery('a[href="#gallery"]').on('shown.bs.tab', function (e) {
             jQuery("#view_photos").css('display','none');
@@ -777,8 +771,10 @@
         });
         //google.maps.event.addDomListener(window, 'load', initialize);
         jQuery(document).ready(function() {
-            //initialize();
-
+            $("#add_to_fav_a").on('click', function (e) {
+                e.preventDefault();
+                add_remove_fav('{{ auth()->user()->id }}','<?php echo $property_info['MLSNUM'] ?>');
+            })
             const styles = {
                 default: [],
                 hide: [
@@ -808,11 +804,6 @@
 
             var infowindow = new google.maps.InfoWindow();
             var marker, i;
-
-
-
-
-
 
             var y=0;
             localStorage.setItem('test', y);
@@ -846,7 +837,7 @@
                         marker = new google.maps.Marker({
                             position: new google.maps.LatLng(locations[i][1], locations[i][2]),
                             map: map,
-                            icon: 'http://localhost:8887/ARP_B_research/images/' + amenity + '.png'
+                            icon: 'http://localhost:8888/ARP_B_research/images/' + amenity + '.png'
                         });
 
                         google.maps.event.addListener(marker, 'click', (function (marker, i) {
@@ -869,43 +860,24 @@
         });
 
 
-        function add_remove_fav(userid,mlsnum,proptype) {
-            //alert(userid+'--'+mlsnum+'--'+proptype);
-            jQuery.ajax({
-                type: 'POST',
-                url: '{{ url('/') }}/ajax/add_remove_fav.php',
-                data: {
-                    userid: userid,
-                    mlsnum: mlsnum,
-                    proptype: proptype
-                },
-                success: function(data, textStatus, XMLHttpRequest){
-                    if(data == 'added') {
-                        jQuery('#add_remove_fav_'+mlsnum+' span').attr('id', 'sel');
-                    }
-                    else if(data == 'removed') {
-                        jQuery('#add_remove_fav_'+mlsnum+' span#sel').removeAttr('id');
-                    }
-                }
-            });
-        }
+        function add_remove_fav(userid,mlsnum) {
 
-        function add_remove_communities_fav(userid,community_id,proptype) {
-            //alert(userid+'--'+mlsnum+'--'+proptype);
             jQuery.ajax({
-                type: 'POST',
-                url: '{{ url('/') }}/ajax/add_remove_communities_fav.php',
+                type: 'GET',
+                url: '{{ url('/') }}/add_remove_fav',
                 data: {
                     userid: userid,
-                    community_id: community_id,
-                    proptype: 'communities'
+                    mlsnum: mlsnum
                 },
                 success: function(data, textStatus, XMLHttpRequest){
+
                     if(data == 'added') {
-                        jQuery('#add_remove_communities_fav_'+community_id+' span').attr('id', 'sel');
+                        //jQuery('#add_remove_fav_'+mlsnum+' span').attr('id', 'sel');
+                        $("#add_to_fav_a").find(".fa-heart-o").removeClass("fa-heart-o").addClass("fa-heart");
                     }
                     else if(data == 'removed') {
-                        jQuery('#add_remove_communities_fav_'+community_id+' span#sel').removeAttr('id');
+                        //jQuery('#add_remove_fav_'+mlsnum+' span#sel').removeAttr('id');
+                        $("#add_to_fav_a").find(".fa-heart").removeClass("fa-heart").addClass("fa-heart-o");
                     }
                 }
             });
